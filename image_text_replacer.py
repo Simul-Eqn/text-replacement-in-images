@@ -18,7 +18,8 @@ def OpenDyslexicFontFitSize(text, w, h): # size limit in pixels
     #print(h, bbox[3]-bbox[1])
 
     # increase size until above
-    while not ( ( (bbox[2]-bbox[0]) > w ) or ( (bbox[3]-bbox[1]) > h) ):
+    #while ( ( (bbox[2]-bbox[0]) <= w ) and ( (bbox[3]-bbox[1]) <= h) ):
+    while ( ( bbox[2] <= w ) and ( bbox[3] <= h) ):
         fontsize += 1
         font = font.font_variant(size=fontsize)
         bbox = font.getbbox(text) # (left, top, right, bottom)
@@ -29,7 +30,10 @@ def OpenDyslexicFontFitSize(text, w, h): # size limit in pixels
     # decrease back so it'll fit
     fontsize -= 1
     font = font.font_variant(size=fontsize)
+
     #print("FINAL FONT SIZE:", fontsize)
+    #print(w, bbox[2]-bbox[0])
+    #print(h, bbox[3]-bbox[1])
 
     return font
 
@@ -81,12 +85,21 @@ def replace_image(img:Image.Image):
     
 
     draw = ImageDraw.Draw(img) 
+
+    # draw all the rectangles first 
     for (text, ltrb) in ress: 
 
         # TODO: account for bg colour? or even remove the text and try to recover background maybe 
-        draw.rectangle( ltrb , fill="white" ) 
+        draw.rectangle( ltrb , fill="white", outline=None ) 
+
+
+    # then draw the text 
+    for (text, ltrb) in ress: 
 
         bbox = ltrb_to_midxmidywh(*ltrb) 
+
+        #print("LTRB:",ltrb)
+        #print("BBOX:",bbox)
 
         # TODO: account for text colour? 
         draw.text( (ltrb[0], ltrb[1]) , text , font=OpenDyslexicFontFitSize(text, bbox[2], bbox[3]) , fill='black') 
