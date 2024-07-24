@@ -1,3 +1,5 @@
 google-cloud-vision
+opencv-python
+numpy
 streamlit
 pillow 
