@@ -96,8 +96,8 @@ def decodeBoundingBoxes(scores, geometry, scoreThresh):
 
 def opencv_east_get_texts_bboxes_dirns(img:Image.Image, confThreshold=0.5, 
                                        nmsThreshold=0.4, inpWidth=320, inpHeight=320, 
-                                       modelDetector='./detectors/frozen_east_text_detection.pb', 
-                                       modelRecognition='./detectors/CRNN_VGG_BiLSTM_CTC.onnx', ): 
+                                       modelDetector='./detectors/opencv_EAST_detector/frozen_east_text_detection.pb', 
+                                       modelRecognition='./detectors/opencv_EAST_detector/CRNN_VGG_BiLSTM_CTC.onnx', ): 
 
     outNames = ["feature_fusion/Conv_7/Sigmoid", "feature_fusion/concat_3"] 
 

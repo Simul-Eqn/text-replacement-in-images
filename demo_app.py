@@ -1,5 +1,6 @@
 import streamlit as st 
-from PIL import Image, ImageChops 
+from PIL import Image #, ImageChops 
+import numpy as np 
 
 import image_text_replacer 
 
@@ -22,7 +23,8 @@ st.session_state['detection_model_name'] = st.selectbox('Model used:', ['OpenCV 
 image_uploader = st.file_uploader("", type=["jpg","png","jpeg","webp"])
 if image_uploader is not None:
     image = Image.open(image_uploader)
-    if (not st.session_state['image']) or (not (ImageChops.difference(st.session_state['image'], image)) ): # if it's a new images 
+    if (not st.session_state['image']) or ( (st.session_state['image'].size != image.size) or 
+                                           ( abs(np.array(st.session_state['image']) - np.array(image)) < 1e-7 ).all() ) : # if it's a new images 
         ress = image_text_replacer.get_texts_bboxes_dirns(image, get_with=st.session_state['detection_model_name']) 
         st.session_state['image'] = image 
         st.session_state['ress'] = ress 
